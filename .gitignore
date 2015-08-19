@@ -1,0 +1,8 @@
+*.gz
+*.min
+Thumbs.db
+.DS_Store
+.idea
+*.swp
+/dist
+/node_modules

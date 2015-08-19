@@ -1,0 +1,45 @@
+<!doctype html>
+<html ng-app="myApp">
+<head>
+    <title>QiXi</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/app.css">
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/bootstrap.min.js"></script>
+    <script src="lib/angular.js"></script>
+    <script src="lib/angular-resource.js"></script>
+    <script src="lib/angular-route.js"></script>
+    <script src="lib/angular-cookies.js"></script>
+    <script src="lib/angular-md5.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/config.js"></script>
+</head>
+
+<body ng-controller="MainCtrl">
+
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    
+    <div class="collapse navbar-collapse">
+        <p>七夕，说出你的心声</p>
+        
+        <!-- <ul class="nav navbar-nav pull-right" ng-show="!!currentUser">
+            <li class="active"><a href="#">Sign in as {{currentUser}}</a></li>
+            <li><a style="cursor: pointer;" ng-click="logout()">Logout</a></li>
+        </ul> -->
+        <ul class="nav navbar-nav pull-right">
+            <li><a href="#/list">主列表</a></li>
+            <li><a href="#/my">个人页面</a></li>
+        </ul>
+    </div>
+
+</nav>
+<div class="container">
+    <div ng-view></div>
+</div>
+
+</body>
+</html>
+

@@ -1,0 +1,22 @@
+<div class="row my">
+  <div class="col-sm-4">
+    <h4>共收到 <b>99</b> 个赞 和 <b>11</b> 个卡片</h4>
+  </div>
+  <div class="col-sm-8 upload-img">
+    <h4>上传我的图片至首页
+      <a class="btn btn-default btn-sm" href="javascript:void(0)"> 选择图片
+        <input type="file" value="浏览" />
+      </a>
+    </h4>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6 col-md-4" ng-repeat="message in messages">
+    <div class="message">
+      <p>
+        {{message.content}}
+      </p>
+    </div>
+  </div>
+</div>   
