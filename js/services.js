@@ -35,39 +35,39 @@ angular.module('myApp.services',  ['ngResource'])
                     data: [
                         {
                             name: '高圆圆',
-                            photo: '/qx/img/gyy.jpg',
+                            photo: '/qixi/img/gyy.jpg',
                             love: 99
                         },{
                             name: '刘亦菲',
-                            photo: '/qx/img/lyf.jpg',
+                            photo: '/qixi/img/lyf.jpg',
                             love: 89
                         },{
                             name: '高圆圆',
-                            photo: '/qx/img/gyy.jpg',
+                            photo: '/qixi/img/gyy.jpg',
                             love: 99
                         },{
                             name: '刘亦菲',
-                            photo: '/qx/img/lyf.jpg',
+                            photo: '/qixi/img/lyf.jpg',
                             love: 89
                         },{
                             name: '高圆圆',
-                            photo: '/qx/img/gyy.jpg',
+                            photo: '/qixi/img/gyy.jpg',
                             love: 99
                         },{
                             name: '刘亦菲',
-                            photo: '/qx/img/lyf.jpg',
+                            photo: '/qixi/img/lyf.jpg',
                             love: 89
                         },{
                             name: '高圆圆',
-                            photo: '/qx/img/gyy.jpg',
+                            photo: '/qixi/img/gyy.jpg',
                             love: 99
                         },{
                             name: '刘亦菲',
-                            photo: '/qx/img/lyf.jpg',
+                            photo: '/qixi/img/lyf.jpg',
                             love: 89
                         },{
                             name: '高圆圆',
-                            photo: '/qx/img/gyy.jpg',
+                            photo: '/qixi/img/gyy.jpg',
                             love: 99
                         }
                     ]
