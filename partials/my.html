@@ -5,17 +5,18 @@
   <div class="col-sm-8 upload-img">
     <h4>上传我的图片至首页
       <a class="btn btn-default btn-sm" href="javascript:void(0)"> 选择图片
-        <input type="file" value="浏览" />
+        <input type="file" id="photoFileUpload">
       </a>
+      <button class="btn btn-default btn-sm" ng-click="upload()"> 上传 </button>
     </h4>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-sm-6 col-md-4" ng-repeat="message in messages">
-    <div class="message">
+  <div class="col-sm-6 col-md-4" ng-repeat="comment in comments">
+    <div class="comment">
       <p>
-        {{message.content}}
+        {{comment.content}}
       </p>
     </div>
   </div>

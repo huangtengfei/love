@@ -74,7 +74,7 @@ angular.module('myApp.services',  ['ngResource'])
                 }
                 return handleRspData(mockData);    
             },
-            getAllMessages: function (params){
+            getAllComments: function (params){
                 var mockData = {
                     errCode: '0',
                     errMsg: '',
