@@ -21,55 +21,29 @@ angular.module('myApp.controllers', [])
 
                 $scope.viewData = {};
                 $scope.viewData.busy = false;
-                $scope.currPage = 1;
+                $scope.photos = [];
+                $scope.pageSize = 12;
+                $scope.pageNumber = 1;
 
-                // $scope.currentUser = $cookieStore.get('username') || '';
-
-                // mainService.getAllPersons().then(function(result) {
-                //     $scope.persons = result;
-                // })
-                var Photo = AV.Object.extend("Photo");
-                var query = new AV.Query(Photo);
-
-                query.count({
-                    success: function(count) {
-                        $scope.totalCount = count;
-                        $scope.totalPage = Math.ceil($scope.totalCount/12);
-                    }
-                });
-
-                query.limit(12);
-                query.find({
-                    success:function (results){
-                        $scope.$apply(function(){
-                            $scope.photos = JSON.parse(JSON.stringify(results));
-                            // $scope.currPage = 1;
-                        })
-                    }
-                })
             };
 
             $scope.loadMore = function(){
+
+                if($scope.viewData.busy) {
+                    return;
+                }
                 
                 $scope.viewData.busy = true;
-                var Photo = AV.Object.extend("Photo");
-                var query = new AV.Query(Photo);
-                // if($scope.currPage < 2){
-                    query.skip(12);
-                    query.limit(12);
-                    query.find({
-                        success:function (results){
-                            $scope.$apply(function(){
-                                var newPhotos = JSON.parse(JSON.stringify(results));
-                                for (var i = 0; i < newPhotos.length; i++) {
-                                    $scope.photos.push(newPhotos[i]);
-                                };
-                                $scope.viewData.busy = false;
-                                $scope.currPage++;
-                            })
-                        }
-                    })
-                // }
+
+                mainService.getPhotos($scope.pageSize, $scope.pageNumber).then(function(results){
+                    var newPhotos = results;
+                    for (var i = 0; i < newPhotos.length; i++) {
+                        $scope.photos.push(newPhotos[i]);
+                    };
+                    $scope.viewData.busy = false;
+                    $scope.pageNumber++;
+                })
+
             }
 
             $scope.comment = function(){
@@ -79,12 +53,8 @@ angular.module('myApp.controllers', [])
                     DialogService.modal({
                         key: "app.loginDialog",
                         url: "partials/login-dialog.html",
-                        accept: function (result) {
-
-                        },
-                        refuse: function () {
-
-                        }
+                        accept: function (result) {},
+                        refuse: function () {}
                     });
 
                 }else {
@@ -92,12 +62,8 @@ angular.module('myApp.controllers', [])
                     DialogService.modal({
                         key: "app.commentDialog",
                         url: "partials/comment-dialog.html",
-                        accept: function (result) {
-
-                        },
-                        refuse: function () {
-
-                        }
+                        accept: function (result) {},
+                        refuse: function () {}
                     });
                 }
             }
@@ -113,31 +79,16 @@ angular.module('myApp.controllers', [])
 
                 $scope.viewData = {};
 
-                // $scope.currentUser = $cookieStore.get('username') || '';
+                $scope.viewData.username = 'htf';
+                $scope.viewData.userJobNo = '15040164';
 
-                // mainService.getAllComments().then(function(result) {
-                //     $scope.comments = result;
-                // })
-
-                $scope.currUserName = 'htf';
-                $scope.currUserNo = '15040164';
-
-                var Comment = AV.Object.extend("Comment");
-                var query = new AV.Query(Comment);
-                query.equalTo("toNo", "15040164");
-                query.find({
-                    success:function (results){
-                        $scope.$apply(function(){
-                            $scope.comments = JSON.parse(JSON.stringify(results));
-                        })
-                    }
+                mainService.getComments($scope.viewData.userJobNo).then(function(results){
+                    $scope.comments = results;
                 })
 
             };
 
             $scope.upload = function(){
-
-                // var avaFile = new AV.File("avatar.jpg", $scope.photo);
 
                 var fileUploadControl = angular.element(document.querySelector('#photoFileUpload'))[0];
                 if (fileUploadControl.files.length > 0) {
@@ -146,19 +97,16 @@ angular.module('myApp.controllers', [])
                     var avFile = new AV.File(name, file);
                 }
 
-                var Photo = AV.Object.extend("Photo");
-                var photo = new Photo();
+                var photo = {
+                    jobNo: $scope.viewData.userJobNo,
+                    name: '高圆圆',
+                    photo: avFile,
+                    like: 0
+                };
 
-                photo.set("jobNo", $scope.currUserNo);
-                photo.set("name", '高圆圆');
-                photo.set('photo', avFile);
-                photo.set('like', 0);
-
-                photo.save(null, {
-                    success: function(result) {
-                        alert('上传成功');
-                    }
-                })
+                mainService.uploadPhoto(photo).then(function(result){
+                    alert('上传成功');
+                }); 
 
             }
 
@@ -178,20 +126,18 @@ angular.module('myApp.controllers', [])
                     return;
                 }
 
-                var Comment = AV.Object.extend("Comment");
-                var comment = new Comment();
-                comment.set("from", "zs");
-                comment.set("fromNo", "11111111");
-                comment.set("to", "htf");
-                comment.set("toNo", "15040164");
-                comment.set("content", $scope.viewData.content);
+                var comment = {
+                    from: "gyy",
+                    fromNo: '11111111',
+                    to: 'htf',
+                    toNo: '15040164',
+                    content: $scope.viewData.content
+                };
 
-                comment.save(null, {
-                    success: function(result){
-                        DialogService.accept("app.commentDialog");
-                        alert("留言成功");
-                    }
-                })               
+                mainService.postComment(comment).then(function(result){
+                    DialogService.accept("app.commentDialog");
+                    alert("留言成功");
+                });              
             };
 
 
