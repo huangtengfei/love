@@ -1,23 +1,23 @@
-<div class="row my">
-  <div class="col-sm-4">
-    <h4>共收到 <b>99</b> 个赞 和 <b>11</b> 个卡片</h4>
-  </div>
-  <div class="col-sm-8 upload-img">
-    <h4>上传我的图片至首页
-      <a class="btn btn-default btn-sm" href="javascript:void(0)"> 选择图片
-        <input type="file" id="photoFileUpload">
-      </a>
-      <button class="btn btn-default btn-sm" ng-click="upload()"> 上传 </button>
-    </h4>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-sm-6 col-md-4" ng-repeat="comment in comments">
-    <div class="comment">
-      <p>
-        {{comment.content}}
-      </p>
+<div class="my-wrapper">
+  <div class="row my">
+    <div class="col-sm-4">
+      <h4>共收到 <b>99</b> 个赞 和 <b>{{comments.length}}</b> 个卡片</h4>
+    </div>
+    <div class="col-sm-8 upload-img">
+      <h4>上传我的图片至首页
+        <a class="btn btn-default btn-sm" href="javascript:void(0)"> 选择图片
+          <input type="file" id="photoFileUpload">
+        </a>
+        <button class="btn btn-default btn-sm" ng-click="upload()"> 上传 </button>
+      </h4>
     </div>
   </div>
-</div>   
+
+  <div class="row comments">
+    <div class="comment" ng-repeat="comment in comments">
+        <p>
+          {{comment.content}}
+        </p>
+    </div>
+  </div> 
+</div>  
