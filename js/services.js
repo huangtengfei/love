@@ -92,6 +92,44 @@ angular.module('myApp.services',  ['ngResource'])
                 return defer.promise;
             },
 
+            signUp: function(params) {
+
+                var defer = $q.defer();
+
+                var user = new AV.User();
+                user.set("username", params.jobNo);
+                user.set("name", params.name);
+                user.set("gender", params.gender);
+                user.set("password", params.password);
+
+                user.signUp(null, {
+                    success: function(result){
+                        defer.resolve(result);
+                    },
+                    error: function(model, error) {
+                        defer.reject(error);
+                    }
+                }) 
+
+                return defer.promise;
+            },
+
+            login: function(params) {
+
+                var defer = $q.defer();
+
+                AV.User.logIn(params.jobNo, params.password, {
+                    success: function(result){
+                        defer.resolve(result);
+                    },
+                    error: function(model, error) {
+                        defer.resolve(error);
+                    }
+                }) 
+
+                return defer.promise;
+            },
+
             uploadPhoto: function(params) {
 
                 var defer = $q.defer();

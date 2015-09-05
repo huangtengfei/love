@@ -2,16 +2,12 @@ angular.module('myApp.controllers', [])
 
     .controller('MainCtrl', ['$scope', '$cookieStore', '$location', function ($scope, $cookieStore, $location) {
 
-        $scope.currentUser = $cookieStore.get('username');
+        $scope.showMy = false;
 
-        $scope.logout = function () {
-            if (!!$cookieStore.get('username')) {
-                $cookieStore.remove('username');
-                $scope.currentUser = '';
-                $location.path('/login');
-            }
-        };
-
+        if($cookieStore.get('jobno')){
+            $scope.showMy = true;
+        }
+        
     }])
 
     .controller('PersonListCtrl', ['$scope', 'mainService', '$cookieStore', 'DialogService',
@@ -48,7 +44,7 @@ angular.module('myApp.controllers', [])
 
             $scope.comment = function(){
 
-                if (!$cookieStore.get('username')) {
+                if (!$cookieStore.get('jobno')) {
 
                     DialogService.modal({
                         key: "app.loginDialog",
@@ -127,8 +123,8 @@ angular.module('myApp.controllers', [])
                 }
 
                 var comment = {
-                    from: "gyy",
-                    fromNo: '11111111',
+                    from: $cookieStore.get('name'),
+                    fromNo: $cookieStore.get('jobno'),
                     to: 'htf',
                     toNo: '15040164',
                     content: $scope.viewData.content
@@ -156,17 +152,52 @@ angular.module('myApp.controllers', [])
         function ($scope, mainService, $cookieStore, DialogService) {
 
             $scope.viewData = {};
+            $scope.formData = {};
+            var vd = $scope.viewData,
+                fd = $scope.formData;
+
+            vd.isReg = false;
 
             $scope.ok = function () {
 
-                if (!$scope.viewData.jobNo || !$scope.viewData.name) {
-                    return;
-                };
+                var user = $scope.formData;
 
-                // 调后台接口判断工号和姓名是否匹配，如果匹配进行以下操作
+                if(vd.isReg){
 
-                $cookieStore.put('username', $scope.viewData.name);
-                DialogService.accept("app.loginDialog", $scope.viewData.name);
+                    if (!fd.jobNo || !fd.name || !fd.password || !fd.gender) {
+                        return;
+                    };
+
+                    mainService.signUp(user).then(function(result){
+                        DialogService.accept("app.loginDialog");
+                        $cookieStore.put('jobno', fd.jobNo);
+                        $cookieStore.put('name', fd.name);
+                        alert('注册成功');
+                    })
+
+                }else {
+
+                    if(!fd.jobNo || !fd.password) {
+                        return;
+                    }
+
+                    AV.User.logIn(fd.jobNo, fd.password, {
+                        success: function(result){
+                            DialogService.accept("app.loginDialog");
+                            $cookieStore.put('jobno', fd.jobNo);
+                            $cookieStore.put('name', fd.name);
+                            alert('登录成功');
+                        },
+                        error: function(model, error) {
+                            if(error.code === 211){
+                                alert('初次登录请先完善信息');
+                            }else if(error.code === 210){
+                                alert('工号与密码不匹配哦');
+                            }
+
+                        }
+                    })   
+                }
 
             };
 
