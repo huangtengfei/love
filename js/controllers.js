@@ -2,11 +2,11 @@ angular.module('myApp.controllers', [])
 
     .controller('MainCtrl', ['$scope', '$cookieStore', '$location', function ($scope, $cookieStore, $location) {
 
-        $scope.showMy = false;
+        // $scope.showMy = false;
 
-        if($cookieStore.get('jobno')){
-            $scope.showMy = true;
-        }
+        // if($cookieStore.get('jobno')){
+        //     $scope.showMy = true;
+        // }
         
     }])
 
