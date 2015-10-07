@@ -42,7 +42,7 @@ angular.module('myApp.controllers', [])
 
             }
 
-            $scope.comment = function(){
+            $scope.comment = function(photo){
 
                 if (!$cookieStore.get('jobno')) {
 
@@ -60,7 +60,26 @@ angular.module('myApp.controllers', [])
                         url: "partials/comment-dialog.html",
                         accept: function (result) {},
                         refuse: function () {}
+                    }, {photo: photo});
+                }
+            }
+
+            $scope.like = function(photo){
+
+                if (!$cookieStore.get('jobno')) {
+
+                    DialogService.modal({
+                        key: "app.loginDialog",
+                        url: "partials/login-dialog.html",
+                        accept: function (result) {},
+                        refuse: function () {}
                     });
+
+                }else {
+                    mainService.updateLike(photo).then(function(result){
+                        photo.like = photo.like + 1;
+                    })
+                    
                 }
             }
 
@@ -75,8 +94,8 @@ angular.module('myApp.controllers', [])
 
                 $scope.viewData = {};
 
-                $scope.viewData.username = 'htf';
-                $scope.viewData.userJobNo = '15040164';
+                $scope.viewData.username = $cookieStore.get('name');  
+                $scope.viewData.userJobNo = $cookieStore.get('jobno');
 
                 mainService.getComments($scope.viewData.userJobNo).then(function(results){
                     $scope.comments = results;
@@ -95,7 +114,7 @@ angular.module('myApp.controllers', [])
 
                 var photo = {
                     jobNo: $scope.viewData.userJobNo,
-                    name: '高圆圆',
+                    name: $scope.viewData.username,
                     photo: avFile,
                     like: 0
                 };
@@ -125,8 +144,8 @@ angular.module('myApp.controllers', [])
                 var comment = {
                     from: $cookieStore.get('name'),
                     fromNo: $cookieStore.get('jobno'),
-                    to: 'htf',
-                    toNo: '15040164',
+                    to: $scope.photo.name,
+                    toNo: $scope.photo.username,
                     content: $scope.viewData.content
                 };
 
@@ -185,7 +204,7 @@ angular.module('myApp.controllers', [])
                         success: function(result){
                             DialogService.accept("app.loginDialog");
                             $cookieStore.put('jobno', fd.jobNo);
-                            $cookieStore.put('name', fd.name);
+                            $cookieStore.put('name', result.attributes.name);
                             alert('登录成功');
                         },
                         error: function(model, error) {

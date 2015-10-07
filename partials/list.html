@@ -4,8 +4,10 @@
       <img ng-src="{{photo.photo.url}}" alt="avatar">
       <div class="caption">
         <h3>{{photo.name}}</h3>              
-        <button class="btn btn-warning">为TA点赞</button>  
-        <button class="btn btn-info ml5" ng-click="comment()">为TA留言</button>    
+        <button class="btn btn-warning" ng-click="like(photo)">为TA点赞
+          <span ng-if="photo.like">({{photo.like}})</span>
+        </button>  
+        <button class="btn btn-info ml5" ng-click="comment(photo)">为TA留言</button>    
       </div>
     </div>
   </div>   
