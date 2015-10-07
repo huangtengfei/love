@@ -1,12 +1,20 @@
 angular.module('myApp.controllers', [])
 
-    .controller('MainCtrl', ['$scope', '$cookieStore', '$location', function ($scope, $cookieStore, $location) {
+    .controller('MainCtrl', ['$scope', '$cookieStore', '$location', 'DialogService', 
+        function ($scope, $cookieStore, $location, DialogService) {
 
-        // $scope.showMy = false;
-
-        // if($cookieStore.get('jobno')){
-        //     $scope.showMy = true;
-        // }
+            $scope.toMy = function(){
+                if(!$cookieStore.get('jobno')){
+                    DialogService.modal({
+                        key: "app.loginDialog",
+                        url: "partials/login-dialog.html",
+                        accept: function (result) {},
+                        refuse: function () {}
+                    });
+                }else{
+                    $location.path('my');
+                }
+            }
         
     }])
 
