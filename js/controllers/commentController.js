@@ -1,38 +1,44 @@
-angular
-    .module('myApp')
-    .controller('CommentController', CommentController);
+(function () {
 
-CommentController.$inject = ['$scope', 'mainService', '$cookieStore', 'DialogService'];
+    'use strict';
 
-function CommentController($scope, mainService, $cookieStore, DialogService) {
-    $scope.viewData = {};
+    angular
+        .module('myApp')
+        .controller('CommentController', CommentController);
 
-    $scope.ok = function () {
+    CommentController.$inject = ['$scope', 'mainService', '$cookieStore', 'DialogService'];
 
-        if (!$scope.viewData.content) {
-            return;
-        }
+    function CommentController($scope, mainService, $cookieStore, DialogService) {
+        $scope.viewData = {};
 
-        var comment = {
-            from: $cookieStore.get('name'),
-            fromNo: $cookieStore.get('jobno'),
-            to: $scope.photo.name,
-            toNo: $scope.photo.username,
-            content: $scope.viewData.content
+        $scope.ok = function () {
+
+            if (!$scope.viewData.content) {
+                return;
+            }
+
+            var comment = {
+                from: $cookieStore.get('name'),
+                fromNo: $cookieStore.get('jobno'),
+                to: $scope.photo.name,
+                toNo: $scope.photo.username,
+                content: $scope.viewData.content
+            };
+
+            mainService.postComment(comment).then(function (result) {
+                DialogService.accept("app.commentDialog");
+                alert("留言成功");
+            });
         };
 
-        mainService.postComment(comment).then(function (result) {
-            DialogService.accept("app.commentDialog");
-            alert("留言成功");
-        });
-    };
 
+        $scope.cancel = function () {
+            DialogService.refuse("app.commentDialog");
+        };
 
-    $scope.cancel = function () {
-        DialogService.refuse("app.commentDialog");
-    };
+        $scope.close = function () {
+            DialogService.dismiss("app.commentDialog");
+        };
+    }
 
-    $scope.close = function () {
-        DialogService.dismiss("app.commentDialog");
-    };
-}
+})();

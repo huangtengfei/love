@@ -1,47 +1,51 @@
-angular
-    .module('myApp')
-    .controller('MyController', MyController);
+(function () {
 
-MyController.$inject = ['$scope', 'mainService', '$cookieStore'];
+    'use strict';
 
-function MyController($scope, mainService, $cookieStore) {
+    angular
+        .module('myApp')
+        .controller('MyController', MyController);
 
-    $scope.init = function () {
+    MyController.$inject = ['$scope', 'mainService', '$cookieStore'];
 
-        $scope.viewData = {};
+    function MyController($scope, mainService, $cookieStore) {
 
-        $scope.viewData.username = $cookieStore.get('name');
-        $scope.viewData.userJobNo = $cookieStore.get('jobno');
+        $scope.init = function () {
 
-        mainService.getComments($scope.viewData.userJobNo).then(function (results) {
-            $scope.comments = results;
-        })
+            $scope.viewData = {};
 
-    };
+            $scope.viewData.username = $cookieStore.get('name');
+            $scope.viewData.userJobNo = $cookieStore.get('jobno');
 
-    $scope.upload = function () {
+            mainService.getComments($scope.viewData.userJobNo).then(function (results) {
+                $scope.comments = results;
+            })
 
-        var fileUploadControl = angular.element(document.querySelector('#photoFileUpload'))[0];
-        if (fileUploadControl.files.length > 0) {
-            var file = fileUploadControl.files[0];
-            var name = "avatar.jpg";
-            var avFile = new AV.File(name, file);
-        }
-
-        var photo = {
-            jobNo: $scope.viewData.userJobNo,
-            name: $scope.viewData.username,
-            photo: avFile,
-            like: 0
         };
 
-        mainService.uploadPhoto(photo).then(function (result) {
-            alert('上传成功');
-        });
+        $scope.upload = function () {
 
+            var fileUploadControl = angular.element(document.querySelector('#photoFileUpload'))[0];
+            if (fileUploadControl.files.length > 0) {
+                var file = fileUploadControl.files[0];
+                var name = "avatar.jpg";
+                var avFile = new AV.File(name, file);
+            }
+
+            var photo = {
+                jobNo: $scope.viewData.userJobNo,
+                name: $scope.viewData.username,
+                photo: avFile,
+                like: 0
+            };
+
+            mainService.uploadPhoto(photo).then(function (result) {
+                alert('上传成功');
+            });
+
+        }
+
+        $scope.init();
     }
 
-
-    $scope.init();
-}
-
+})();

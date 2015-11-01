@@ -1,158 +1,164 @@
-angular.module('myApp')
-    .service('mainService', mainService);
+(function(){
 
-mainService.$inject = ['$q'];
+    'use strict';
 
-function mainService($q) {
+    angular.module('myApp')
+        .service('mainService', mainService);
 
-    return {
+    mainService.$inject = ['$q'];
 
-        getPhotos: function (pageSize, pageNumber) {
+    function mainService($q) {
 
-            var defer = $q.defer();
+        return {
 
-            var Photo = AV.Object.extend("Photo");
-            var query = new AV.Query(Photo);
-            query.limit(pageSize);
-            query.skip((pageNumber - 1) * pageSize);
+            getPhotos: function (pageSize, pageNumber) {
 
-            query.find({
-                success: function (results) {
-                    defer.resolve(JSON.parse(JSON.stringify(results)));
-                },
-                error: function (model, error) {
-                    defer.reject(error);
-                }
-            })
+                var defer = $q.defer();
 
-            return defer.promise;
-        },
+                var Photo = AV.Object.extend("Photo");
+                var query = new AV.Query(Photo);
+                query.limit(pageSize);
+                query.skip((pageNumber - 1) * pageSize);
 
-        getComments: function (jobNo) {
+                query.find({
+                    success: function (results) {
+                        defer.resolve(JSON.parse(JSON.stringify(results)));
+                    },
+                    error: function (model, error) {
+                        defer.reject(error);
+                    }
+                })
 
-            var defer = $q.defer();
+                return defer.promise;
+            },
 
-            var Photo = AV.Object.extend("Comment");
-            var query = new AV.Query(Photo);
-            query.equalTo("toNo", jobNo);
-            query.find({
-                success: function (results) {
-                    defer.resolve(JSON.parse(JSON.stringify(results)));
-                },
-                error: function (model, error) {
-                    defer.reject(error);
-                }
-            })
+            getComments: function (jobNo) {
 
-            return defer.promise;
-        },
+                var defer = $q.defer();
 
-        postComment: function (params) {
+                var Photo = AV.Object.extend("Comment");
+                var query = new AV.Query(Photo);
+                query.equalTo("toNo", jobNo);
+                query.find({
+                    success: function (results) {
+                        defer.resolve(JSON.parse(JSON.stringify(results)));
+                    },
+                    error: function (model, error) {
+                        defer.reject(error);
+                    }
+                })
 
-            var defer = $q.defer();
+                return defer.promise;
+            },
 
-            var Comment = AV.Object.extend("Comment");
-            var comment = new Comment();
-            comment.set("from", params.from);
-            comment.set("fromNo", params.fromNo);
-            comment.set("to", params.to);
-            comment.set("toNo", params.toNo);
-            comment.set("content", params.content);
+            postComment: function (params) {
 
-            comment.save(null, {
-                success: function (result) {
-                    defer.resolve(result);
-                },
-                error: function (model, error) {
-                    defer.reject(error);
-                }
-            })
+                var defer = $q.defer();
 
-            return defer.promise;
-        },
+                var Comment = AV.Object.extend("Comment");
+                var comment = new Comment();
+                comment.set("from", params.from);
+                comment.set("fromNo", params.fromNo);
+                comment.set("to", params.to);
+                comment.set("toNo", params.toNo);
+                comment.set("content", params.content);
 
-        updateLike: function (photo) {
+                comment.save(null, {
+                    success: function (result) {
+                        defer.resolve(result);
+                    },
+                    error: function (model, error) {
+                        defer.reject(error);
+                    }
+                })
 
-            var defer = $q.defer();
+                return defer.promise;
+            },
 
-            var Photo = AV.Object.extend("Photo");
-            var query = new AV.Query("Photo");
+            updateLike: function (photo) {
 
-            query.get(photo.objectId, {
-                success: function (result) {
-                    result.set('like', photo.like + 1);
-                    result.save();
-                    defer.resolve(result);
-                },
-                error: function (model, error) {
-                    defer.reject(error);
-                }
-            })
+                var defer = $q.defer();
 
-            return defer.promise;
+                var Photo = AV.Object.extend("Photo");
+                var query = new AV.Query("Photo");
 
-        },
+                query.get(photo.objectId, {
+                    success: function (result) {
+                        result.set('like', photo.like + 1);
+                        result.save();
+                        defer.resolve(result);
+                    },
+                    error: function (model, error) {
+                        defer.reject(error);
+                    }
+                })
 
-        signUp: function (params) {
+                return defer.promise;
 
-            var defer = $q.defer();
+            },
 
-            var user = new AV.User();
-            user.set("username", params.jobNo);
-            user.set("name", params.name);
-            user.set("gender", params.gender);
-            user.set("password", params.password);
+            signUp: function (params) {
 
-            user.signUp(null, {
-                success: function (result) {
-                    defer.resolve(result);
-                },
-                error: function (model, error) {
-                    defer.reject(error);
-                }
-            })
+                var defer = $q.defer();
 
-            return defer.promise;
-        },
+                var user = new AV.User();
+                user.set("username", params.jobNo);
+                user.set("name", params.name);
+                user.set("gender", params.gender);
+                user.set("password", params.password);
 
-        login: function (params) {
+                user.signUp(null, {
+                    success: function (result) {
+                        defer.resolve(result);
+                    },
+                    error: function (model, error) {
+                        defer.reject(error);
+                    }
+                })
 
-            var defer = $q.defer();
+                return defer.promise;
+            },
 
-            AV.User.logIn(params.jobNo, params.password, {
-                success: function (result) {
-                    defer.resolve(result);
-                },
-                error: function (model, error) {
-                    defer.resolve(error);
-                }
-            })
+            login: function (params) {
 
-            return defer.promise;
-        },
+                var defer = $q.defer();
 
-        uploadPhoto: function (params) {
+                AV.User.logIn(params.jobNo, params.password, {
+                    success: function (result) {
+                        defer.resolve(result);
+                    },
+                    error: function (model, error) {
+                        defer.resolve(error);
+                    }
+                })
 
-            var defer = $q.defer();
+                return defer.promise;
+            },
 
-            var Photo = AV.Object.extend("Photo");
-            var photo = new Photo();
+            uploadPhoto: function (params) {
 
-            photo.set("jobNo", params.jobNo);
-            photo.set("name", params.name);
-            photo.set('photo', params.photo);
-            photo.set('like', params.like);
+                var defer = $q.defer();
 
-            photo.save(null, {
-                success: function (result) {
-                    defer.resolve(result);
-                },
-                error: function (model, error) {
-                    defer.reject(error);
-                }
-            })
+                var Photo = AV.Object.extend("Photo");
+                var photo = new Photo();
 
-            return defer.promise;
-        }
-    };
-}
+                photo.set("jobNo", params.jobNo);
+                photo.set("name", params.name);
+                photo.set('photo', params.photo);
+                photo.set('like', params.like);
+
+                photo.save(null, {
+                    success: function (result) {
+                        defer.resolve(result);
+                    },
+                    error: function (model, error) {
+                        defer.reject(error);
+                    }
+                })
+
+                return defer.promise;
+            }
+        };
+    }
+
+})();

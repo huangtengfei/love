@@ -1,67 +1,73 @@
-angular
-    .module('myApp')
-    .controller('LoginController', LoginController);
+(function(){
 
-LoginController.$inject = ['$scope', 'mainService', '$cookieStore', 'DialogService'];
+    'use strict';
 
-function LoginController($scope, mainService, $cookieStore, DialogService) {
-    $scope.viewData = {};
-    $scope.formData = {};
-    var vd = $scope.viewData,
-        fd = $scope.formData;
+    angular
+        .module('myApp')
+        .controller('LoginController', LoginController);
 
-    vd.isReg = false;ß
+    LoginController.$inject = ['$scope', 'mainService', '$cookieStore', 'DialogService'];
 
-    $scope.ok = function () {
+    function LoginController($scope, mainService, $cookieStore, DialogService) {
+        $scope.viewData = {};
+        $scope.formData = {};
+        var vd = $scope.viewData,
+            fd = $scope.formData;
 
-        var user = $scope.formData;
+        vd.isReg = false;
 
-        if (vd.isReg) {
+        $scope.ok = function () {
 
-            if (!fd.jobNo || !fd.name || !fd.password || !fd.gender) {
-                return;
-            }
-            ;
+            var user = $scope.formData;
 
-            mainService.signUp(user).then(function (result) {
-                DialogService.accept("app.loginDialog");
-                $cookieStore.put('jobno', fd.jobNo);
-                $cookieStore.put('name', fd.name);
-                alert('注册成功');
-            })
+            if (vd.isReg) {
 
-        } else {
+                if (!fd.jobNo || !fd.name || !fd.password || !fd.gender) {
+                    return;
+                }
+                ;
 
-            if (!fd.jobNo || !fd.password) {
-                return;
-            }
-
-            AV.User.logIn(fd.jobNo, fd.password, {
-                success: function (result) {
+                mainService.signUp(user).then(function (result) {
                     DialogService.accept("app.loginDialog");
                     $cookieStore.put('jobno', fd.jobNo);
-                    $cookieStore.put('name', result.attributes.name);
-                    alert('登录成功');
-                },
-                error: function (model, error) {
-                    if (error.code === 211) {
-                        alert('初次登录请先完善信息');
-                    } else if (error.code === 210) {
-                        alert('工号与密码不匹配哦');
-                    }
+                    $cookieStore.put('name', fd.name);
+                    alert('注册成功');
+                })
 
+            } else {
+
+                if (!fd.jobNo || !fd.password) {
+                    return;
                 }
-            })
-        }
 
-    };
+                AV.User.logIn(fd.jobNo, fd.password, {
+                    success: function (result) {
+                        DialogService.accept("app.loginDialog");
+                        $cookieStore.put('jobno', fd.jobNo);
+                        $cookieStore.put('name', result.attributes.name);
+                        alert('登录成功');
+                    },
+                    error: function (model, error) {
+                        if (error.code === 211) {
+                            alert('初次登录请先完善信息');
+                        } else if (error.code === 210) {
+                            alert('工号与密码不匹配哦');
+                        }
+
+                    }
+                })
+            }
+
+        };
 
 
-    $scope.cancel = function () {
-        DialogService.refuse("app.loginDialog");
-    };
+        $scope.cancel = function () {
+            DialogService.refuse("app.loginDialog");
+        };
 
-    $scope.close = function () {
-        DialogService.dismiss("app.loginDialog");
-    };
-}
+        $scope.close = function () {
+            DialogService.dismiss("app.loginDialog");
+        };
+    }
+
+})();

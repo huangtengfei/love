@@ -1,72 +1,79 @@
-angular.module("myApp")
-    .service("DialogService", DialogService);
+(function () {
 
-DialogService.$inject = ["$http", "$document", "$rootScope", "$compile"];    
+    'use strict';
 
-function DialogService($http, $document, $rootScope, $compile) {
-    var zIndex = 1050;
-    var dialogCounter = 0;
+    angular
+        .module("myApp")
+        .service("DialogService", DialogService);
 
-    var dialogMap = {};
-    return {
-        modal: function (param, data) {
-            $http.get(param.url).then(function (result) {
-                dialogCounter += 2;
+    DialogService.$inject = ["$http", "$document", "$rootScope", "$compile"];
 
-                var mask = angular.element('<div class="modal-backdrop fade in"></div>');
-                $document.find("body").append(mask);
-                mask.css("z-index", zIndex + dialogCounter);
+    function DialogService($http, $document, $rootScope, $compile) {
+        var zIndex = 1050;
+        var dialogCounter = 0;
 
-                var dialog = angular.element(result.data);
-                var newScope = $rootScope.$new();
-                if (data) {
-                    angular.extend(newScope, data);
-                }
-                var element = $compile(dialog)(newScope);
+        var dialogMap = {};
+        return {
+            modal: function (param, data) {
+                $http.get(param.url).then(function (result) {
+                    dialogCounter += 2;
 
-                $document.find("body").append(element);
-                element.css("display", "block");
-                element.css("z-index", zIndex + dialogCounter + 1);
+                    var mask = angular.element('<div class="modal-backdrop fade in"></div>');
+                    $document.find("body").append(mask);
+                    mask.css("z-index", zIndex + dialogCounter);
 
-                dialogMap[param.key] = param;
-                dialogMap[param.key].dialog = element;
-                dialogMap[param.key].mask = mask;
-            });
-        },
+                    var dialog = angular.element(result.data);
+                    var newScope = $rootScope.$new();
+                    if (data) {
+                        angular.extend(newScope, data);
+                    }
+                    var element = $compile(dialog)(newScope);
 
-        accept: function (key, result) {
-            this.dismiss(key);
+                    $document.find("body").append(element);
+                    element.css("display", "block");
+                    element.css("z-index", zIndex + dialogCounter + 1);
 
-            if (dialogMap[key].accept) {
-                dialogMap[key].accept(result);
-            }
-        },
+                    dialogMap[param.key] = param;
+                    dialogMap[param.key].dialog = element;
+                    dialogMap[param.key].mask = mask;
+                });
+            },
 
-        refuse: function (key, reason) {
-            this.dismiss(key);
-
-            if (dialogMap[key].refuse) {
-                dialogMap[key].refuse(reason);
-            }
-        },
-
-        dismiss: function (key) {
-            dialogMap[key].mask.remove();
-            dialogMap[key].dialog.remove();
-        },
-
-        dismissAll: function() {
-            for (var key in dialogMap) {
+            accept: function (key, result) {
                 this.dismiss(key);
-            }
-        },
 
-        postMessage: function (key, type, message) {
-            if (dialogMap[key].messageHandler) {
-                if (dialogMap[key].messageHandler[type]) {
-                    dialogMap[key].messageHandler[type](message);
+                if (dialogMap[key].accept) {
+                    dialogMap[key].accept(result);
+                }
+            },
+
+            refuse: function (key, reason) {
+                this.dismiss(key);
+
+                if (dialogMap[key].refuse) {
+                    dialogMap[key].refuse(reason);
+                }
+            },
+
+            dismiss: function (key) {
+                dialogMap[key].mask.remove();
+                dialogMap[key].dialog.remove();
+            },
+
+            dismissAll: function () {
+                for (var key in dialogMap) {
+                    this.dismiss(key);
+                }
+            },
+
+            postMessage: function (key, type, message) {
+                if (dialogMap[key].messageHandler) {
+                    if (dialogMap[key].messageHandler[type]) {
+                        dialogMap[key].messageHandler[type](message);
+                    }
                 }
             }
-        }
-    };
-}
+        };
+    }
+
+})();

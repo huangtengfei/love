@@ -1,88 +1,94 @@
-angular
-    .module('myApp')
-    .controller('HomeController', HomeController);
+(function(){
 
-HomeController.$inject = ['$scope', 'mainService', '$cookieStore', 'DialogService'];
+    'use strict';
 
-function HomeController($scope, mainService, $cookieStore, DialogService) {
+    angular
+        .module('myApp')
+        .controller('HomeController', HomeController);
 
-    $scope.init = function () {
+    HomeController.$inject = ['$scope', 'mainService', '$cookieStore', 'DialogService'];
 
-        $scope.viewData = {};
-        $scope.viewData.busy = false;
-        $scope.photos = [];
-        $scope.pageSize = 12;
-        $scope.pageNumber = 1;
+    function HomeController($scope, mainService, $cookieStore, DialogService) {
 
-    };
+        $scope.init = function () {
 
-    $scope.loadMore = function () {
-
-        if ($scope.viewData.busy) {
-            return;
-        }
-
-        $scope.viewData.busy = true;
-
-        mainService.getPhotos($scope.pageSize, $scope.pageNumber).then(function (results) {
-            var newPhotos = results;
-            for (var i = 0; i < newPhotos.length; i++) {
-                $scope.photos.push(newPhotos[i]);
-            }
-            ;
+            $scope.viewData = {};
             $scope.viewData.busy = false;
-            $scope.pageNumber++;
-        })
+            $scope.photos = [];
+            $scope.pageSize = 12;
+            $scope.pageNumber = 1;
 
-    }
+        };
 
-    $scope.comment = function (photo) {
+        $scope.loadMore = function () {
 
-        if (!$cookieStore.get('jobno')) {
+            if ($scope.viewData.busy) {
+                return;
+            }
 
-            DialogService.modal({
-                key: "app.loginDialog",
-                url: "partials/login-dialog.html",
-                accept: function (result) {
-                },
-                refuse: function () {
+            $scope.viewData.busy = true;
+
+            mainService.getPhotos($scope.pageSize, $scope.pageNumber).then(function (results) {
+                var newPhotos = results;
+                for (var i = 0; i < newPhotos.length; i++) {
+                    $scope.photos.push(newPhotos[i]);
                 }
-            });
-
-        } else {
-
-            DialogService.modal({
-                key: "app.commentDialog",
-                url: "partials/comment-dialog.html",
-                accept: function (result) {
-                },
-                refuse: function () {
-                }
-            }, {photo: photo});
-        }
-    }
-
-    $scope.like = function (photo) {
-
-        if (!$cookieStore.get('jobno')) {
-
-            DialogService.modal({
-                key: "app.loginDialog",
-                url: "partials/login-dialog.html",
-                accept: function (result) {
-                },
-                refuse: function () {
-                }
-            });
-
-        } else {
-            mainService.updateLike(photo).then(function (result) {
-                photo.like = photo.like + 1;
+                ;
+                $scope.viewData.busy = false;
+                $scope.pageNumber++;
             })
 
         }
+
+        $scope.comment = function (photo) {
+
+            if (!$cookieStore.get('jobno')) {
+
+                DialogService.modal({
+                    key: "app.loginDialog",
+                    url: "partials/login-dialog.html",
+                    accept: function (result) {
+                    },
+                    refuse: function () {
+                    }
+                });
+
+            } else {
+
+                DialogService.modal({
+                    key: "app.commentDialog",
+                    url: "partials/comment-dialog.html",
+                    accept: function (result) {
+                    },
+                    refuse: function () {
+                    }
+                }, {photo: photo});
+            }
+        }
+
+        $scope.like = function (photo) {
+
+            if (!$cookieStore.get('jobno')) {
+
+                DialogService.modal({
+                    key: "app.loginDialog",
+                    url: "partials/login-dialog.html",
+                    accept: function (result) {
+                    },
+                    refuse: function () {
+                    }
+                });
+
+            } else {
+                mainService.updateLike(photo).then(function (result) {
+                    photo.like = photo.like + 1;
+                })
+
+            }
+        }
+
+        $scope.init();
+
     }
 
-    $scope.init();
-
-}
+})();
