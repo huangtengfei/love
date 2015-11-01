@@ -7,39 +7,44 @@
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Reenie+Beanie:regular">
     <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico"/>
-    <script src="lib/jquery.min.js"></script>
-    <script src="lib/bootstrap.min.js"></script>
-    <script src="lib/angular.js"></script>
-    <script src="lib/angular-resource.js"></script>
-    <script src="lib/angular-route.js"></script>
-    <script src="lib/angular-cookies.js"></script>
-    <script src="lib/angular-md5.js"></script>
-    <script src="lib/angular-ui-router.js"></script>
-    <script src="lib/ng-infinite-scroll.min.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/services.js"></script>
-    <script src="js/common.js"></script>
-    <script src="js/controllers.js"></script>
-    <script src="js/config.js"></script>
-    <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.5.7.js"></script>
 </head>
 
-<body ng-controller="MainCtrl">
+<body>
 
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     
     <div class="collapse navbar-collapse">
         <p>爱，就大声说出来</p>
         <ul class="nav navbar-nav pull-right">
-            <li><a href="#/list">主列表</a></li>
-            <li><a href="" ng-click="toMy()">个人页面</a></li>
+            <li><a ui-sref="Home">主列表</a></li>
+            <li><a ui-sref="My">个人页面</a></li>
         </ul>
     </div>
 
 </nav>
 <div class="container">
-    <div ng-view></div>
+    <div ui-view></div>
 </div>
+
+    <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.5.7.js"></script>
+
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/bootstrap.min.js"></script>
+    <script src="lib/angular.js"></script>
+    <script src="lib/angular-cookies.js"></script>
+    <script src="lib/angular-ui-router.js"></script>
+    <script src="lib/ng-infinite-scroll.min.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/config.js"></script>
+    
+    <script src="js/controllers/mainController.js"></script>
+    <script src="js/controllers/homeController.js"></script>
+    <script src="js/controllers/myController.js"></script>
+    <script src="js/controllers/loginController.js"></script>
+    <script src="js/controllers/commentController.js"></script>
 
 </body>
 </html>

@@ -1,15 +1,20 @@
-angular.module('myApp', ['ngRoute', 'ngCookies', 'angular-md5', 'infinite-scroll', 'myApp.services', 'myApp.controllers', 'myApp.config']).
-	config(['$routeProvider', function($routeProvider) {
-		$routeProvider.
-			when('/list', {
-				templateUrl: 'partials/list.html',
-				controller: 'PersonListCtrl'
-			}).
-			when('/my', {
-				templateUrl: 'partials/my.html',
-				controller: 'MyCtrl'
-			}).
-			// If invalid route, just redirect to the main list view
-			otherwise({ redirectTo: '/list' });
-}]);
+angular.module('myApp', ['ui.router', 'ngCookies', 'infinite-scroll']);
 
+angular.module('myApp').config(config);
+
+config.$inject = ['$urlRouterProvider', '$stateProvider'];
+
+function config($urlRouterProvider, $stateProvider) {
+	$urlRouterProvider.otherwise("/home");
+	$stateProvider
+		.state("Home", {
+			url: "/home",
+			templateUrl: "partials/home.html",
+            controller: 'HomeController'
+		})
+		.state("My", {
+			url: "/my",
+			templateUrl: "partials/my.html",
+            controller: 'MyController'
+		})
+}	

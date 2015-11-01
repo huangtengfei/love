@@ -1,4 +1,9 @@
-angular.module("myApp.services").service("DialogService", ["$http", "$document", "$rootScope", "$compile", function ($http, $document, $rootScope, $compile) {
+angular.module("myApp")
+    .service("DialogService", DialogService);
+
+DialogService.$inject = ["$http", "$document", "$rootScope", "$compile"];    
+
+function DialogService($http, $document, $rootScope, $compile) {
     var zIndex = 1050;
     var dialogCounter = 0;
 
@@ -64,4 +69,4 @@ angular.module("myApp.services").service("DialogService", ["$http", "$document",
             }
         }
     };
-}]);
+}
