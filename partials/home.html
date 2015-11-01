@@ -1,13 +1,13 @@
-<div class="row mt40" infinite-scroll='loadMore()' infinite-scroll-disabled='viewData.busy' infinite-scroll-distance='1'>
-  <div class="col-sm-6 col-md-3" ng-repeat="photo in photos">
+<div class="row mt40" infinite-scroll='vm.loadMore()' infinite-scroll-disabled='vm.busy' infinite-scroll-distance='1'>
+  <div class="col-sm-6 col-md-3" ng-repeat="photo in vm.photos">
     <div class="thumbnail">
       <img ng-src="{{photo.photo.url}}" alt="avatar">
       <div class="caption">
         <h3>{{photo.name}}</h3>              
-        <button class="btn btn-warning" ng-click="like(photo)">为TA点赞
+        <button class="btn btn-warning" ng-click="vm.like(photo)">为TA点赞
           <span ng-if="photo.like">({{photo.like}})</span>
         </button>  
-        <button class="btn btn-info ml5" ng-click="comment(photo)">为TA留言</button>    
+        <button class="btn btn-info ml5" ng-click="vm.comment(photo)">为TA留言</button>
       </div>
     </div>
   </div>   

@@ -6,88 +6,71 @@
         .module('myApp')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$scope', 'mainService', '$cookieStore', 'DialogService'];
+    HomeController.$inject = ['$cookieStore', 'AvService', 'DialogService'];
 
-    function HomeController($scope, mainService, $cookieStore, DialogService) {
+    function HomeController($cookieStore, AvService, DialogService) {
 
-        $scope.init = function () {
+        var vm = this;
 
-            $scope.viewData = {};
-            $scope.viewData.busy = false;
-            $scope.photos = [];
-            $scope.pageSize = 12;
-            $scope.pageNumber = 1;
+        vm.photos = []; // 所有照片
+        vm.busy = false; // 是否正在加载中
 
-        };
+        vm.loadMore = loadMore; // 加载下一页
+        vm.like = like; // 点赞
+        vm.comment = comment; // 留言
 
-        $scope.loadMore = function () {
+        //////////////////////// Functions ////////////////////////
 
-            if ($scope.viewData.busy) {
+        var pageSize = 12;
+        var pageNumber = 1;
+
+
+        function loadMore() {
+
+            if (vm.busy) {
                 return;
             }
 
-            $scope.viewData.busy = true;
+            vm.busy = true;
 
-            mainService.getPhotos($scope.pageSize, $scope.pageNumber).then(function (results) {
+            AvService.getPhotos(pageSize, pageNumber).then(function (results) {
                 var newPhotos = results;
                 for (var i = 0; i < newPhotos.length; i++) {
-                    $scope.photos.push(newPhotos[i]);
+                    vm.photos.push(newPhotos[i]);
                 }
                 ;
-                $scope.viewData.busy = false;
-                $scope.pageNumber++;
+                vm.busy = false;
+                pageNumber++;
             })
 
         }
 
-        $scope.comment = function (photo) {
-
+        function like(photo) {
             if (!$cookieStore.get('jobno')) {
-
                 DialogService.modal({
                     key: "app.loginDialog",
-                    url: "partials/login-dialog.html",
-                    accept: function (result) {
-                    },
-                    refuse: function () {
-                    }
+                    url: "partials/login-dialog.html"
                 });
-
             } else {
+                AvService.updateLike(photo).then(function () {
+                    photo.like = photo.like + 1;
+                })
+            }
+        }
 
+        function comment(photo) {
+            if (!$cookieStore.get('jobno')) {
+                DialogService.modal({
+                    key: "app.loginDialog",
+                    url: "partials/login-dialog.html"
+                });
+            } else {
                 DialogService.modal({
                     key: "app.commentDialog",
-                    url: "partials/comment-dialog.html",
-                    accept: function (result) {
-                    },
-                    refuse: function () {
-                    }
+                    url: "partials/comment-dialog.html"
                 }, {photo: photo});
             }
         }
-
-        $scope.like = function (photo) {
-
-            if (!$cookieStore.get('jobno')) {
-
-                DialogService.modal({
-                    key: "app.loginDialog",
-                    url: "partials/login-dialog.html",
-                    accept: function (result) {
-                    },
-                    refuse: function () {
-                    }
-                });
-
-            } else {
-                mainService.updateLike(photo).then(function (result) {
-                    photo.like = photo.like + 1;
-                })
-
-            }
-        }
-
-        $scope.init();
 
     }
 

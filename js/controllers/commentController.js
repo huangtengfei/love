@@ -6,14 +6,23 @@
         .module('myApp')
         .controller('CommentController', CommentController);
 
-    CommentController.$inject = ['$scope', 'mainService', '$cookieStore', 'DialogService'];
+    CommentController.$inject = ['$scope', '$cookieStore', 'AvService', 'DialogService'];
 
-    function CommentController($scope, mainService, $cookieStore, DialogService) {
-        $scope.viewData = {};
+    function CommentController($scope, $cookieStore, AvService, DialogService) {
 
-        $scope.ok = function () {
+        var vm = this;
 
-            if (!$scope.viewData.content) {
+        vm.formData = {}; // 表单数据
+
+        vm.ok = ok; // 确定
+        vm.cancel = cancel; // 取消
+        vm.close = close; // 关闭
+
+        //////////////////////// Functions ////////////////////////
+
+        function ok() {
+
+            if (!vm.formData.content) {
                 return;
             }
 
@@ -22,23 +31,23 @@
                 fromNo: $cookieStore.get('jobno'),
                 to: $scope.photo.name,
                 toNo: $scope.photo.username,
-                content: $scope.viewData.content
+                content: vm.formData.content
             };
 
-            mainService.postComment(comment).then(function (result) {
+            AvService.postComment(comment).then(function (result) {
                 DialogService.accept("app.commentDialog");
                 alert("留言成功");
             });
-        };
+        }
 
 
-        $scope.cancel = function () {
+        function cancel() {
             DialogService.refuse("app.commentDialog");
-        };
+        }
 
-        $scope.close = function () {
+        function close() {
             DialogService.dismiss("app.commentDialog");
-        };
+        }
     }
 
 })();

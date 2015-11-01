@@ -9,7 +9,7 @@
     <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico"/>
 </head>
 
-<body>
+<body ng-controller="MainController as vm">
 
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     
@@ -17,7 +17,7 @@
         <p>爱，就大声说出来</p>
         <ul class="nav navbar-nav pull-right">
             <li><a ui-sref="Home">主列表</a></li>
-            <li><a ui-sref="My">个人页面</a></li>
+            <li><a href="javascript:void(0);" ng-click="vm.toMy()">个人页面</a></li>
         </ul>
     </div>
 

@@ -6,28 +6,32 @@
         .module('myApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$scope', 'mainService', '$cookieStore', 'DialogService'];
+    LoginController.$inject = ['$cookieStore', 'AvService', 'DialogService'];
 
-    function LoginController($scope, mainService, $cookieStore, DialogService) {
-        $scope.viewData = {};
-        $scope.formData = {};
-        var vd = $scope.viewData,
-            fd = $scope.formData;
+    function LoginController($cookieStore, AvService, DialogService) {
 
-        vd.isReg = false;
+        var vm = this;
 
-        $scope.ok = function () {
+        vm.isReg = false; // 是否已注册
+        vm.formData = {}; // 表单数据
 
-            var user = $scope.formData;
+        vm.ok = ok; // 确定
+        vm.cancel = cancel; // 取消
+        vm.close = close; // 关闭
 
-            if (vd.isReg) {
+        //////////////////////// Functions ////////////////////////
+
+        var fd = vm.formData;
+
+        function ok() {
+
+            if (vm.isReg) {
 
                 if (!fd.jobNo || !fd.name || !fd.password || !fd.gender) {
                     return;
                 }
-                ;
 
-                mainService.signUp(user).then(function (result) {
+                AvService.signUp(fd).then(function (result) {
                     DialogService.accept("app.loginDialog");
                     $cookieStore.put('jobno', fd.jobNo);
                     $cookieStore.put('name', fd.name);
@@ -53,21 +57,18 @@
                         } else if (error.code === 210) {
                             alert('工号与密码不匹配哦');
                         }
-
                     }
                 })
             }
+        }
 
-        };
-
-
-        $scope.cancel = function () {
+        function cancel() {
             DialogService.refuse("app.loginDialog");
-        };
+        }
 
-        $scope.close = function () {
+        function close() {
             DialogService.dismiss("app.loginDialog");
-        };
+        }
     }
 
 })();

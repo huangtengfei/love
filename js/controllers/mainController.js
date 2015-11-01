@@ -6,10 +6,17 @@
         .module('myApp')
         .controller('MainController', MainController);
 
-    MainController.$inject = ['$scope', '$cookieStore', '$location', 'DialogService'];
+    MainController.$inject = ['$state', '$cookieStore', 'DialogService'];
 
-    function MainController($scope, $cookieStore, $location, DialogService) {
-        $scope.toMy = function () {
+    function MainController($state, $cookieStore, DialogService) {
+
+        var vm = this;
+
+        vm.toMy = toMy; // 链接跳转
+
+        //////////////////////// Functions ////////////////////////
+
+        function toMy () {
             if (!$cookieStore.get('jobno')) {
                 DialogService.modal({
                     key: "app.loginDialog",
@@ -20,7 +27,7 @@
                     }
                 });
             } else {
-                $location.path('my');
+                $state.go('My');
             }
         }
     }

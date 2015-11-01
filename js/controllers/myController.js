@@ -6,24 +6,25 @@
         .module('myApp')
         .controller('MyController', MyController);
 
-    MyController.$inject = ['$scope', 'mainService', '$cookieStore'];
+    MyController.$inject = ['AvService', '$cookieStore'];
 
-    function MyController($scope, mainService, $cookieStore) {
+    function MyController(AvService, $cookieStore) {
 
-        $scope.init = function () {
+        var vm = this;
 
-            $scope.viewData = {};
+        vm.upload = upload; // 上传照片
 
-            $scope.viewData.username = $cookieStore.get('name');
-            $scope.viewData.userJobNo = $cookieStore.get('jobno');
+        //////////////////////// Functions ////////////////////////
 
-            mainService.getComments($scope.viewData.userJobNo).then(function (results) {
-                $scope.comments = results;
+        init();
+
+        function init(){
+            AvService.getComments($cookieStore.get('jobno')).then(function (results) {
+                vm.comments = results;
             })
+        }
 
-        };
-
-        $scope.upload = function () {
+        function upload() {
 
             var fileUploadControl = angular.element(document.querySelector('#photoFileUpload'))[0];
             if (fileUploadControl.files.length > 0) {
@@ -33,19 +34,17 @@
             }
 
             var photo = {
-                jobNo: $scope.viewData.userJobNo,
-                name: $scope.viewData.username,
+                jobNo: $cookieStore.get('jobno'),
+                name: $cookieStore.get('name'),
                 photo: avFile,
                 like: 0
             };
 
-            mainService.uploadPhoto(photo).then(function (result) {
+            AvService.uploadPhoto(photo).then(function (result) {
                 alert('上传成功');
             });
 
         }
-
-        $scope.init();
     }
 
 })();
