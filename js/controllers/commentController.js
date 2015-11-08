@@ -30,7 +30,7 @@
                 from: $cookieStore.get('name'),
                 fromNo: $cookieStore.get('jobno'),
                 to: $scope.photo.name,
-                toNo: $scope.photo.username,
+                toNo: $scope.photo.jobNo,
                 content: vm.formData.content
             };
 

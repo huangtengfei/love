@@ -73,13 +73,8 @@
 
             var Comment = AV.Object.extend("Comment");
             var comment = new Comment();
-            comment.set("from", params.from);
-            comment.set("fromNo", params.fromNo);
-            comment.set("to", params.to);
-            comment.set("toNo", params.toNo);
-            comment.set("content", params.content);
 
-            comment.save(null, {
+            comment.save(params, {
                 success: function (result) {
                     defer.resolve(result);
                 },
