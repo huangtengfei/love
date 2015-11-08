@@ -23,12 +23,16 @@
 
         //////////////////////// Functions ////////////////////////
 
-        function getPhotos(pageSize, pageNumber) {
+        function getPhotos(pageSize, pageNumber, queryParams) {
 
             var defer = $q.defer();
 
             var Photo = AV.Object.extend("Photo");
             var query = new AV.Query(Photo);
+            query.descending(queryParams.orderType);
+            if(queryParams.gender){
+                query.equalTo("gender", queryParams.gender);
+            }
             query.limit(pageSize);
             query.skip((pageNumber - 1) * pageSize);
 
@@ -116,12 +120,7 @@
             var Photo = AV.Object.extend("Photo");
             var photo = new Photo();
 
-            photo.set("jobNo", params.jobNo);
-            photo.set("name", params.name);
-            photo.set('photo', params.photo);
-            photo.set('like', params.like);
-
-            photo.save(null, {
+            photo.save(params, {
                 success: function (result) {
                     defer.resolve(result);
                 },

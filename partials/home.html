@@ -1,4 +1,26 @@
-<div class="row mt40" infinite-scroll='vm.loadMore()' infinite-scroll-disabled='vm.busy' infinite-scroll-distance='1'>
+<div class="row filter-con">
+    <div class="filter-box col-md-12">
+        <div>
+            <a href="" ng-class="{'active': vm.queryParams.orderType=='like'}"
+                    ng-click="vm.queryParams.orderType='like'">最热</a>
+            <span> / </span>
+            <a href="" ng-class="{'active': vm.queryParams.orderType=='createdAt'}"
+                    ng-click="vm.queryParams.orderType='createdAt'">最新</a>
+        </div>
+        <div class="pull-right">
+            <a href="" ng-class="{'active': vm.queryParams.gender==''}"
+                    ng-click="vm.queryParams.gender=''">全部</a>
+            <span> / </span>
+            <a href="" ng-class="{'active': vm.queryParams.gender=='boy'}"
+                    ng-click="vm.queryParams.gender='boy'">只看男</a>
+            <span> / </span>
+            <a href="" ng-class="{'active': vm.queryParams.gender=='girl'}"
+                    ng-click="vm.queryParams.gender='girl'">只看女</a>
+        </div>
+    </div>
+</div>
+
+<div class="row" infinite-scroll='vm.loadMore()' infinite-scroll-disabled='vm.busy' infinite-scroll-distance='1'>
   <div class="col-sm-6 col-md-3" ng-repeat="photo in vm.photos">
     <div class="thumbnail">
       <img ng-src="{{photo.photo.url}}" alt="avatar">
@@ -7,7 +29,7 @@
         <button class="btn btn-warning" ng-click="vm.like(photo)">为TA点赞
           <span ng-if="photo.like">({{photo.like}})</span>
         </button>  
-        <button class="btn btn-info ml5" ng-click="vm.comment(photo)">为TA留言</button>
+        <button class="btn btn-info ml5" ng-click="vm.comment(photo)">给TA留言</button>
       </div>
     </div>
   </div>   

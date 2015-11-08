@@ -6,14 +6,17 @@
         .module('myApp')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$cookieStore', 'AvService', 'DialogService'];
+    HomeController.$inject = ['$scope', '$cookieStore', 'AvService', 'DialogService'];
 
-    function HomeController($cookieStore, AvService, DialogService) {
+    function HomeController($scope, $cookieStore, AvService, DialogService) {
 
         var vm = this;
 
         vm.photos = []; // 所有照片
         vm.busy = false; // 是否正在加载中
+        vm.queryParams = {};
+        vm.queryParams.orderType = 'like'; // 默认按热门排序
+        vm.queryParams.gender = ''; // 默认显示全部性别
 
         vm.loadMore = loadMore; // 加载下一页
         vm.like = like; // 点赞
@@ -24,6 +27,21 @@
         var pageSize = 12;
         var pageNumber = 1;
 
+        $scope.$watch('vm.queryParams.orderType', function(nv, ov) {
+            if(nv != ov) {
+                vm.photos = [];
+                pageNumber = 1;
+                loadMore();
+            }
+        });
+
+        $scope.$watch('vm.queryParams.gender', function(nv, ov) {
+            if(nv != ov) {
+                vm.photos = [];
+                pageNumber = 1;
+                loadMore();
+            }
+        });
 
         function loadMore() {
 
@@ -33,7 +51,7 @@
 
             vm.busy = true;
 
-            AvService.getPhotos(pageSize, pageNumber).then(function (results) {
+            AvService.getPhotos(pageSize, pageNumber, vm.queryParams).then(function (results) {
                 var newPhotos = results;
                 for (var i = 0; i < newPhotos.length; i++) {
                     vm.photos.push(newPhotos[i]);

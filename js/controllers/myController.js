@@ -36,6 +36,7 @@
             var photo = {
                 jobNo: $cookieStore.get('jobno'),
                 name: $cookieStore.get('name'),
+                gender: $cookieStore.get('gender'),
                 photo: avFile,
                 like: 0
             };

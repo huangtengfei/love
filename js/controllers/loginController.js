@@ -35,6 +35,7 @@
                     DialogService.accept("app.loginDialog");
                     $cookieStore.put('jobno', fd.jobNo);
                     $cookieStore.put('name', fd.name);
+                    $cookieStore.put('gender', fd.gender);
                     alert('注册成功');
                 })
 
@@ -49,6 +50,7 @@
                         DialogService.accept("app.loginDialog");
                         $cookieStore.put('jobno', fd.jobNo);
                         $cookieStore.put('name', result.attributes.name);
+                        $cookieStore.put('gender', result.attributes.gender);
                         alert('登录成功');
                     },
                     error: function (model, error) {
