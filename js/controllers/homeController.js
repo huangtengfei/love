@@ -21,6 +21,7 @@
         vm.loadMore = loadMore; // 加载下一页
         vm.like = like; // 点赞
         vm.comment = comment; // 留言
+        vm.search = search;
 
         //////////////////////// Functions ////////////////////////
 
@@ -30,6 +31,7 @@
         $scope.$watch('vm.queryParams.orderType', function(nv, ov) {
             if(nv != ov) {
                 vm.photos = [];
+                vm.queryParams.name = '';
                 pageNumber = 1;
                 loadMore();
             }
@@ -38,6 +40,7 @@
         $scope.$watch('vm.queryParams.gender', function(nv, ov) {
             if(nv != ov) {
                 vm.photos = [];
+                vm.queryParams.name = '';
                 pageNumber = 1;
                 loadMore();
             }
@@ -88,6 +91,12 @@
                     url: "partials/comment-dialog.html"
                 }, {photo: photo});
             }
+        }
+
+        function search() {
+            vm.photos = [];
+            pageNumber = 1;
+            loadMore();
         }
 
     }

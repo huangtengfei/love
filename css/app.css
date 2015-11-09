@@ -164,9 +164,10 @@ body {
 }
 
 .filter-box {
-    border: 1px dotted #e8e8e8;
+    /*border: 1px dotted #e8e8e8;*/
+    background: #f2f2f2;
     height: 44px;
-    padding: 14px 10px;
+    padding: 15px 10px;
 }
 
 .filter-box div {
@@ -185,6 +186,45 @@ body {
 .filter-box span {
     font-size: 14px;
     color: #999;
+}
+
+#inp-query {
+    height: 28px;
+    width: 240px;
+    margin-top: -8px;
+    padding-left: 10px;
+    font-size: 12px;
+    border: 1px solid #e1e9e1;
+}
+
+#inp-query:focus {
+    outline: none;
+}
+
+.inp-btn {
+    position: absolute;
+    left: auto;
+    top: 8px;
+    right: 10px;
+    width: 30px;
+    height: 28px;
+    *height: 30px;
+    border: 1px solid #e1e9e1;
+    border-left: none;
+    background-color: #fff;
+    font-size: 0;
+    overflow: hidden
+}
+
+.inp-btn input {
+    border: none;
+    width: 30px;
+    height: 28px;
+    *height: 30px;
+    padding: 0;
+    margin: 0;
+    line-height: 100px;
+    background: transparent url(http://img3.douban.com/f/shire/f71f15922ebd7c0ff0ea0e7a25577529efd8981a/pics/icon/bn_srh_1.png) no-repeat 50% 50%
 }
 
 

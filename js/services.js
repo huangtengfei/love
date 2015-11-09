@@ -33,6 +33,9 @@
             if(queryParams.gender){
                 query.equalTo("gender", queryParams.gender);
             }
+            if(queryParams.name){
+                query.equalTo("name", queryParams.name);
+            }
             query.limit(pageSize);
             query.skip((pageNumber - 1) * pageSize);
 

@@ -7,15 +7,23 @@
             <a href="javascript:void(0);" ng-class="{'active': vm.queryParams.orderType=='createdAt'}"
                     ng-click="vm.queryParams.orderType='createdAt'">最新</a>
         </div>
-        <div class="pull-right">
+        <div style="margin-left: 15px;">
             <a href="javascript:void(0);" ng-class="{'active': vm.queryParams.gender==''}"
-                    ng-click="vm.queryParams.gender=''">全部</a>
+               ng-click="vm.queryParams.gender=''">全部</a>
             <span> / </span>
             <a href="javascript:void(0);" ng-class="{'active': vm.queryParams.gender=='boy'}"
-                    ng-click="vm.queryParams.gender='boy'">只看男</a>
+               ng-click="vm.queryParams.gender='boy'">只看男</a>
             <span> / </span>
             <a href="javascript:void(0);" ng-class="{'active': vm.queryParams.gender=='girl'}"
-                    ng-click="vm.queryParams.gender='girl'">只看女</a>
+               ng-click="vm.queryParams.gender='girl'">只看女</a>
+        </div>
+        <div class="pull-right">
+            <form ng-submit="vm.search()" >
+                <input id="inp-query" type="text" ng-model="vm.queryParams.name" placeholder="搜索你感兴趣的人...">
+                <div class="inp-btn">
+                    <input type="submit" ng-click="vm.search()" value="搜索" />
+                </div>
+            </form>
         </div>
     </div>
 </div>
