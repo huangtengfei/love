@@ -28,7 +28,8 @@
     </div>
 </div>
 
-<div class="row" infinite-scroll='vm.loadMore()' infinite-scroll-disabled='vm.busy' infinite-scroll-distance='1'>
+<div class="row" ng-show="!vm.searched || (vm.searched && vm.photos.length > 1)"
+     infinite-scroll='vm.loadMore()' infinite-scroll-disabled='vm.busy' infinite-scroll-distance='1'>
   <div class="col-sm-6 col-md-3" ng-repeat="photo in vm.photos">
     <div class="thumbnail">
       <img ng-src="{{photo.photo.url}}" alt="avatar">
@@ -41,4 +42,25 @@
       </div>
     </div>
   </div>   
+</div>
+
+<div class="row" ng-show="vm.searched && vm.photos.length == 1">
+    <div class="col-md-6 col-md-offset-3 no-result text-muted" style="margin-top: 100px;">
+        <div class="thumbnail">
+            <img ng-src="{{vm.photos[0].photo.url}}" alt="avatar">
+            <div class="caption">
+                <h3>{{vm.photos[0].name}}</h3>
+                <button class="btn btn-warning" ng-click="vm.like(vm.photos[0])">为TA点赞
+                    <span ng-if="vm.photos[0].like">({{vm.photos[0].like}})</span>
+                </button>
+                <button class="btn btn-info ml5" ng-click="vm.comment(vm.photos[0])">给TA留言</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-show="vm.searched && !vm.photos.length">
+    <div class="col-md-6 col-md-offset-3 no-result text-muted">
+        你要找的人TA还没来...
+    </div>
 </div>

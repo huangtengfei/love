@@ -227,6 +227,12 @@ body {
     background: transparent url(http://img3.douban.com/f/shire/f71f15922ebd7c0ff0ea0e7a25577529efd8981a/pics/icon/bn_srh_1.png) no-repeat 50% 50%
 }
 
+.no-result {
+    text-align: center;
+    font-size: 20px;
+    margin-top: 200px;
+}
+
 
 
 

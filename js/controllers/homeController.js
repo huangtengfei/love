@@ -17,6 +17,7 @@
         vm.queryParams = {};
         vm.queryParams.orderType = 'like'; // 默认按热门排序
         vm.queryParams.gender = ''; // 默认显示全部性别
+        vm.searched = false;
 
         vm.loadMore = loadMore; // 加载下一页
         vm.like = like; // 点赞
@@ -31,6 +32,7 @@
         $scope.$watch('vm.queryParams.orderType', function(nv, ov) {
             if(nv != ov) {
                 vm.photos = [];
+                vm.searched = false;
                 vm.queryParams.name = '';
                 pageNumber = 1;
                 loadMore();
@@ -40,6 +42,7 @@
         $scope.$watch('vm.queryParams.gender', function(nv, ov) {
             if(nv != ov) {
                 vm.photos = [];
+                vm.searched = false;
                 vm.queryParams.name = '';
                 pageNumber = 1;
                 loadMore();
@@ -95,6 +98,7 @@
 
         function search() {
             vm.photos = [];
+            vm.searched = true;
             pageNumber = 1;
             loadMore();
         }
