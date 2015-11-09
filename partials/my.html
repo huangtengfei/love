@@ -1,7 +1,7 @@
 <div class="my-wrapper">
   <div class="row my">
     <div class="col-sm-4">
-      <h4>共收到 <b>99</b> 个赞 和 <b>{{vm.comments.length}}</b> 个卡片</h4>
+      <h4>共收到 <b ng-bind="vm.like"></b> 个赞 和 <b ng-bind="vm.comments.length"></b> 个卡片</h4>
     </div>
     <div class="col-sm-8 upload-img">
       <h4>上传我的图片至首页
@@ -13,10 +13,11 @@
     </div>
   </div>
 
-  <div class="row comments">
+  <div class="row comments" style="margin-top: 10px;">
     <div class="comment" ng-repeat="comment in vm.comments">
         <p>
-          {{comment.content}}---来自{{comment.from}}
+          {{comment.content}}
+            <!-----来自{{comment.from}}-->
         </p>
     </div>
   </div> 

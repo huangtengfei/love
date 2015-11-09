@@ -22,6 +22,9 @@
             AvService.getComments($cookieStore.get('jobno')).then(function (results) {
                 vm.comments = results;
             })
+            AvService.getLike($cookieStore.get('jobno')).then(function (result) {
+                vm.like = result.like;
+            })
         }
 
         function upload() {

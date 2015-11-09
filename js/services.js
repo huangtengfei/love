@@ -12,6 +12,7 @@
         var av = {
             getPhotos: getPhotos, // 获取所有照片
             getComments: getComments, // 获取所有留言
+            getLike: getLike,
             postComment: postComment, // 留言
             updateLike: updateLike, // 更新赞
             uploadPhoto: uploadPhoto, // 上传（更新）照片
@@ -59,6 +60,25 @@
             var query = new AV.Query(Photo);
             query.equalTo("toNo", jobNo);
             query.find({
+                success: function (results) {
+                    defer.resolve(JSON.parse(JSON.stringify(results)));
+                },
+                error: function (model, error) {
+                    defer.reject(error);
+                }
+            })
+
+            return defer.promise;
+        }
+
+        function getLike(jobNo) {
+
+            var defer = $q.defer();
+
+            var Photo = AV.Object.extend("Photo");
+            var query = new AV.Query(Photo);
+            query.equalTo("jobNo", jobNo);
+            query.first({
                 success: function (results) {
                     defer.resolve(JSON.parse(JSON.stringify(results)));
                 },
